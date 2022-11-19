@@ -30,16 +30,22 @@ class JobController extends Controller
         if ($dataJob) {
             $status = 'success';
             $statusCode = 201;
-        } else {
-            $status = 'failed';
-            $statusCode = 400;
-        }
-        
-        return response()->json([
+            return response()->json([
                 'status' => $status,'data' => $dataJob,
             ],
             $statusCode
         );
+        } else {
+            $status = 'failed';
+            $statusCode = 400;
+            return response()->json([
+                'status' => $status,'data' => $dataJob,
+            ],
+            $statusCode
+        );
+        }
+        
+        
     }   
 
     public function getJob(): JsonResponse
@@ -49,15 +55,19 @@ class JobController extends Controller
         if ($dataJob) {
             $status = "success";
             $statusCode = 200;
-        } else {
-            $status = "failed";
-            $statusCode = 404;
-        }
-
-        return response()->json([
+            return response()->json([
                 'status' => $status,'data' => $dataJob,
             ],
             $statusCode
         );
+        } else {
+            $status = "failed";
+            $statusCode = 404;
+            return response()->json([
+                'status' => $status,'data' => $dataJob,
+            ],
+            $statusCode
+        );
+        }        
     }
 }

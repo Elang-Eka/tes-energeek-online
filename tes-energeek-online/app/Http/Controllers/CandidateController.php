@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\Job;
 use App\Models\Skill;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class CandidateController extends Controller
             'set_skills.*' => 'required|distinct',
             'job_id' => 'required'
         ];
+
         $messageError = [
             'required' => 'kolom harus diisi',
             'email' => 'email tidak valid',
@@ -27,6 +29,7 @@ class CandidateController extends Controller
             'numeric' => 'data yang diisi harus angka',
             'distinct' => 'data harus berbeda'
         ];
+
         $validator = Validator::make($request->all(),$validateCandidate,$messageError);
         if ($validator->fails()){
             return response()->json(['status' => 'failed','message'=>$validator->messages()]);
@@ -55,38 +58,43 @@ class CandidateController extends Controller
         if ($data) {
             $status = 'success';
             $statusCode = 201;
+            return response()->json([
+                'status' => $status,'data' => $data,
+            ],
+            $statusCode);
         } else {
             $status = 'failed';
             $statusCode = 400;
+            return response()->json([
+                'status' => $status,'data' => $data,
+            ],
+            $statusCode);
         }
-
-        $response = response()->json([
-            'status' => $status,'data' => $data,
-        ],
-        $statusCode);
-
-        return $response;
     }
 
     public function getCandidate(): JsonResponse
     {
-        $dataCandidate = Candidate::all();
+        $dataCandidate = Candidate::with([
+            'job:id,name'
+            ])->take(100)->get();
 
         if ($dataCandidate) {
             $status = "success";
             $statusCode = 200;
-        } else {
-            $status = "failed";
-            $statusCode = 404;
-        }
-
-        $response = response()->json([
+            return response()->json([
                 'status' => $status,'data' => $dataCandidate,
             ],
             $statusCode
         );
-
-        return $response;
+        } else {
+            $status = "failed";
+            $statusCode = 404;
+            return response()->json([
+                'status' => $status,'data' => $dataCandidate,
+            ],
+            $statusCode
+        );
+        }
     }
 }
 

@@ -30,16 +30,20 @@ class SkillController extends Controller
         if ($dataSkill) {
             $status = 'success';
             $statusCode = 201;
-        } else {
-            $status = 'failed';
-            $statusCode = 400;
-        }
-
-        return response()->json([
+            return response()->json([
                 'status' => $status,'data' => $dataSkill,
             ],
             $statusCode
         );
+        } else {
+            $status = 'failed';
+            $statusCode = 400;
+            return response()->json([
+                'status' => $status,'data' => $dataSkill,
+            ],
+            $statusCode
+        );
+        }
     }
 
     public function getSkill(Request $request): JsonResponse
@@ -49,15 +53,21 @@ class SkillController extends Controller
         if ($dataSkill) {
             $status = "success";
             $statusCode = 200;
-        } else {
-            $status = "failed";
-            $statusCode = 404;
-        }
-
-        return response()->json([
+            return response()->json([
                 'status' => $status,'data' => $dataSkill,
             ],
             $statusCode
         );
+        } else {
+            $status = "failed";
+            $statusCode = 404;
+            return response()->json([
+                'status' => $status,'data' => $dataSkill,
+            ],
+            $statusCode
+        );
+        }
+
+        
     }
 }
